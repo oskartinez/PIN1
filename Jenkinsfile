@@ -5,9 +5,7 @@ pipeline {
   options {
     timeout(time: 2, unit: 'MINUTES')
   }
-
   environment {
-    ARTIFACT_ID = "elbuo8/webapp:${env.BUILD_NUMBER}"
     NEXUS_URL = "192.168.0.21:8083"
   }
    stages {
@@ -18,9 +16,7 @@ pipeline {
              '''  
         }
     }
-  
-  
-    stage('Run tests') {
+   stage('Run tests') {
       steps {
         sh "docker run testapp npm test"
       }
