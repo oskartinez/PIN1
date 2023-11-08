@@ -7,13 +7,13 @@ pipeline {
 
   environment {
     ARTIFACT_ID = "elbuo8/webapp:${env.BUILD_NUMBER}"
+    NEXUS_URL = "192.168.0.21:8083"
   }
    stages {
    stage('Building image') {
       steps{
           sh '''
-          cd webapp
-          docker build -t testapp .
+             docker build -t testapp .
              '''  
         }
     }
@@ -27,8 +27,9 @@ pipeline {
    stage('Deploy Image') {
       steps{
         sh '''
-        docker tag testapp 127.0.0.1:5000/mguazzardo/testapp
-        docker push 127.0.0.1:5000/mguazzardo/testapp   
+        docker login ${NEXUS_URL} -u dockeruser -p holamundo123
+        docker image tag testapp ${NEXUS_URL}/dockeruser/testapp:1.0
+        docker image push ${NEXUS_URL}/dockeruser/testapp:1.0
         '''
         }
       }
